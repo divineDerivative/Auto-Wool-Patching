@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!--Category only exists in one version-->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>VGP Garden Fabrics</li>
+		</mods>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingCategoryDef[defName="BWP_Fleece"]/parent</xpath>
+			<value>
+				<parent>GardenFabrics</parent>
+			</value>
+		</match>
+	</Operation>
+</Patch>

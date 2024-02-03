@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Base -->
+	<ThingDef Abstract="True" ParentName="OrganicProductBase" Name="BWP_FleeceBase">
+		<soundInteract>Standard_Drop</soundInteract>
+		<soundDrop>Standard_Drop</soundDrop>
+		<stackLimit>100</stackLimit>
+		<thingCategories>
+			<li>BWP_Fleece</li>
+		</thingCategories>
+		<graphicData>
+			<texPath>Things/Item/Resource/fleece</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1</MarketValue>
+			<Flammability>2</Flammability>
+			<DeteriorationRate>8</DeteriorationRate>
+		</statBases>
+	</ThingDef>
+</Defs>
+

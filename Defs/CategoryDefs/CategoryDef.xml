@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingCategoryDef>
+		<defName>BWP_Fleece</defName>
+		<label>fleece</label>
+		<parent>Textiles</parent>
+		<iconPath>Things/Item/Resource/fleece</iconPath>
+	</ThingCategoryDef>
+</Defs>

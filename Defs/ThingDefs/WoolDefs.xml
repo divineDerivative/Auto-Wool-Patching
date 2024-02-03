@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Wool -->
+	<ThingDef ParentName="WoolBase">
+		<defName>WoolBlended</defName>
+		<label>blended wool</label>
+		<description>Various wool scraps carded together into a usable wool fabric.</description>
+		<graphicData>
+			<color>(174,171,146)</color>
+		</graphicData>
+		<statBases>
+			<StuffPower_Armor_Sharp>0.3</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Heat>1.0</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>22</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(174,171,146)</color>
+		</stuffProps>
+	</ThingDef>
+
+	<ThingSetMakerDef>
+		<defName>OneOfEachFleece</defName>
+		<root Class="ThingSetMaker_Sum">
+			<options>
+				<li>
+					<thingSetMaker Class="ThingSetMaker_Count">
+						<fixedParams>
+							<filter>
+								<thingDefs>
+									<li>AIPersonaCore</li>
+								</thingDefs>
+							</filter>
+						</fixedParams>
+					</thingSetMaker>
+				</li>
+			</options>
+		</root>
+	</ThingSetMakerDef>
+</Defs>
+

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!-- Alpha Animals -->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Alpha Animals</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+				<li Class="PatchOperationAdd">
+					<xpath>/Defs</xpath>
+					<value>
+						<ThingDef ParentName="BWP_FleeceBase">
+							<defName>BWP_ChameleonYakFleeceTemperate</defName>
+							<label>chameleon yak fleece, temperate</label>
+							<description>The untreated fleece of a Chameleon Yak. It must be made into wool before it can be used.</description>
+							<graphicData>
+								<color>(66,47,41)</color>
+							</graphicData>
+							<butcherProducts>
+								<AA_ChameleonYakWoolTemperate>25</AA_ChameleonYakWoolTemperate>
+							</butcherProducts>
+						</ThingDef>
+
+						<ThingDef ParentName="BWP_FleeceBase">
+							<defName>BWP_ChameleonYakFleeceWinter</defName>
+							<label>chameleon yak fleece, winter</label>
+							<description>The untreated fleece of a Chameleon Yak. It must be made into wool before it can be used.</description>
+							<graphicData>
+								<color>(252,253,254)</color>
+							</graphicData>
+							<butcherProducts>
+								<AA_ChameleonYakWoolWinter>25</AA_ChameleonYakWoolWinter>
+							</butcherProducts>
+						</ThingDef>
+
+						<ThingDef ParentName="BWP_FleeceBase">
+							<defName>BWP_ChameleonYakFleeceJungle</defName>
+							<label>chameleon yak fleece, Jungle</label>
+							<description>The untreated fleece of a Chameleon Yak. It must be made into wool before it can be used.</description>
+							<graphicData>
+								<color>(64,72,39)</color>
+							</graphicData>
+							<butcherProducts>
+								<AA_ChameleonYakWoolJungle>25</AA_ChameleonYakWoolJungle>
+							</butcherProducts>
+						</ThingDef>
+
+						<ThingDef ParentName="BWP_FleeceBase">
+							<defName>BWP_ChameleonYakFleeceDesert</defName>
+							<label>chameleon yak fleece, desert</label>
+							<description>The untreated fleece of a Chameleon Yak. It must be made into wool before it can be used.</description>
+							<graphicData>
+								<color>(184,168,110)</color>
+							</graphicData>
+							<butcherProducts>
+								<AA_ChameleonYakWoolDesert>25</AA_ChameleonYakWoolDesert>
+							</butcherProducts>
+						</ThingDef>
+
+						<ThingDef ParentName="BWP_FleeceBase">
+							<defName>BWP_NightFleece</defName>
+							<label>night fleece</label>
+							<description>A dark hued fleece. It must be made into wool before it can be used.</description>
+							<graphicData>
+								<color>(45,45,57)</color>
+							</graphicData>
+							<butcherProducts>
+								<AA_NightWool>25</AA_NightWool>
+							</butcherProducts>
+						</ThingDef>
+					</value>
+				</li>
+				<li Class="PatchOperationReplace">
+					<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "AnimalBehaviours.CompProperties_AnimalProduct"]/seasonalItems</xpath>
+					<value>
+						<seasonalItems>
+							<li>BWP_ChameleonYakFleeceTemperate</li>
+							<li>BWP_ChameleonYakFleeceWinter</li>
+							<li>BWP_ChameleonYakFleeceJungle</li>
+							<li>BWP_ChameleonYakFleeceDesert</li>
+						</seasonalItems>
+					</value>
+				</li>
+				<li Class="PatchOperationConditional">
+					<xpath>/Defs/ThingDef/comps/li[@Class = "CompProperties_Shearable" and woolDef = "AA_NightWool"]/woolDef</xpath>
+					<match Class="PatchOperationReplace">
+						<xpath>/Defs/ThingDef/comps/li[@Class = "CompProperties_Shearable" and woolDef = "AA_NightWool"]/woolDef</xpath>
+						<value>
+							<woolDef>BWP_NightFleece</woolDef>
+						</value>
+					</match>
+				</li>
+
+				<li Class="PatchOperationSequence" MayRequireAnyOf="dismarzero.vgp.vgpgardenfabrics,dismarzero.vgp.vgpgardenfabricssimplified">
+					<operations>
+						<li Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="BWP_ChameleonYakFleeceTemperate"]/description</xpath>
+							<value>
+								<description>The untreated fleece of a Chameleon Yak. It must be made into wool at a Tailor's loom before it can be used.</description>
+							</value>
+						</li>
+						<li Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="BWP_ChameleonYakFleeceWinter"]/description</xpath>
+							<value>
+								<description>The untreated fleece of a Chameleon Yak. It must be made into wool at a Tailor's loom before it can be used.</description>
+							</value>
+						</li>
+						<li Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="BWP_ChameleonYakFleeceJungle"]/description</xpath>
+							<value>
+								<description>The untreated fleece of a Chameleon Yak. It must be made into wool at a Tailor's loom before it can be used.</description>
+							</value>
+						</li>
+						<li Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="BWP_ChameleonYakFleeceDesert"]/description</xpath>
+							<value>
+								<description>The untreated fleece of a Chameleon Yak. It must be made into wool at a Tailor's loom before it can be used.</description>
+							</value>
+						</li>
+						<li Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="BWP_NightFleece"]/description</xpath>
+							<value>
+								<description>A dark hued fleece. It must be made into wool at a Tailor's loom before it can be used.</description>
+							</value>
+						</li>
+					</operations>
+				</li>
+			</operations>
+		</match>
+	</Operation>
+</Patch>

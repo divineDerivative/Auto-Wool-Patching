@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<AutoWool.FleeceDesc>The untreated fleece of a {0}. It must be made into wool before it can be used.</AutoWool.FleeceDesc>
+	<AutoWool.VGPFleeceDesc>The untreated fleece of a {0}. It must be made into wool at a Tailor's loom before it can be used.</AutoWool.VGPFleeceDesc>
+	<AutoWool.ThreadDesc>The untreated silk of a {0}. It must be processed before it can be used.</AutoWool.ThreadDesc>
+	<AutoWool.VGPThreadDesc>The untreated silk of a {0}. It must be processed at a Tailor's loom before it can be used.</AutoWool.VGPThreadDesc>
+	<AutoWool.ModNameShort>Better Wool Production</AutoWool.ModNameShort>
+	<AutoWool.ModNameLong>Better Wool Production - C# Edition</AutoWool.ModNameLong>
+	<AutoWool.SettingsWool>Choose which animals should have their wool converted to fleece</AutoWool.SettingsWool>
+	<AutoWool.SettingsAlphaUnique>Alpha Animals has animals that can produce special items</AutoWool.SettingsAlphaUnique>
+	<AutoWool.SettingsAlphaUniqueTooltip>Animals that produce from a random list of items are not included</AutoWool.SettingsAlphaUniqueTooltip>
+	<AutoWool.SettingsAlphaVanilla>These produce vanilla items</AutoWool.SettingsAlphaVanilla>
+	<AutoWool.SettingsAlphaVanillaTooltip>It wouldn't make sense to convert any of these, but you do you</AutoWool.SettingsAlphaVanillaTooltip>
+	<AutoWool.RestartNeeded>RimWorld must be restarted for changes to take effect.</AutoWool.RestartNeeded>
+	<AutoWool.RemovedFleeceWarning>\n\nAny instances of old fleece will disappear when you reload the save, so make sure you've processed them if you want to keep the wool.</AutoWool.RemovedFleeceWarning>
+</LanguageData>

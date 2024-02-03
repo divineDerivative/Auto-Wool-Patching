@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Better Wool Production - C# Edition</name>
+	<shortName>Better Wool Production</shortName>
+	<author>divineDerivative</author>
+	<supportedVersions>
+		<li>1.4</li>
+	</supportedVersions>
+	<packageId>divineDerivative.AutoWool</packageId>
+	<description>Another continuation of Better Wool Production, but using C# to automagically make fleece for all wools. No more waiting for someone to add a patch for new mods, it just works!
+
+   • Shearable animals now yield unfinished fleece instead of wool, which needs to be processed into usable wool at a crafting spot or tailoring bench.
+   • Butchering shearable animals now gives a reduced amount of fleece, about half what you would get from a normal shearing.
+   • New recipe for blended wool, which can be made with random bits of wool, similar to patchleather</description>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld</downloadUrl>
+		</li>
+	</modDependencies>
+</ModMetaData>

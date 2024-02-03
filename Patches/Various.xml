@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- Medieval Times -->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Medieval Times</li>
+			<li>Medieval Times (Continued)</li>
+		</mods>
+		<match  Class="PatchOperationAdd">
+			<xpath>Defs/RecipeDef[@Name = "ProcessWoolBase"]/recipeUsers</xpath>
+			<value>
+				<li>MedTimes_TailoringStation</li>
+			</value>
+		</match>
+	</Operation>
+	
+	<!--Anima Animals-->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Anima Animals - Community Pack (temp)[HH]</li>
+		</mods>
+		<match Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[defName="WoolAnimaYak"]/thingCategories</xpath>
+			<value>
+				<thingCategories>
+					<li>Wools</li>
+				</thingCategories>
+			</value>
+		</match>
+	</Operation>
+	
+</Patch>
