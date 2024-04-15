@@ -1,6 +1,6 @@
-﻿using Verse;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UnityEngine;
+using Verse;
 
 namespace AutoWool
 {
@@ -11,7 +11,7 @@ namespace AutoWool
         public AutoWoolPatching(ModContentPack content) : base(content)
         {
             settings = GetSettings<AutoWoolSettings>();
-            Harmony harmony = new Harmony(id: "divineDerivative.AutoWool");
+            Harmony harmony = new(id: "divineDerivative.AutoWool");
             harmony.PatchAll();
         }
 

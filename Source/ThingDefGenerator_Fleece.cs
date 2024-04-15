@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace AutoWool
@@ -8,7 +8,7 @@ namespace AutoWool
     {
         public static IEnumerable<ThingDef> ImpliedFleeceDefs()
         {
-            GeneratorUtility.debugThing.options = new List<ThingSetMaker_Sum.Option>();
+            GeneratorUtility.debugThing.options = new();
             foreach (ThingDef animal in AutoWoolSettings.AllShearableAnimals)
             {
                 if (!AutoWoolSettings.CheckSettings(animal))
@@ -22,7 +22,7 @@ namespace AutoWool
                     continue;
                 }
 
-                ThingDef fleeceDef = new ThingDef();
+                ThingDef fleeceDef = new();
                 CompProperties_Shearable comp = animal.GetCompProperties<CompProperties_Shearable>();
                 ThingDef woolDef = comp.woolDef;
                 if (woolDef.defName.ToLower().Contains("fleece"))

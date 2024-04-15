@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Mono.Cecil;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +15,8 @@ namespace AutoWool
         //Add a toggle for this somewhere? Maybe in the dev debug menu, I don't feel like putting it in the regular settings
         public static bool debugLogging = false;
 
-        public static List<ThingDef> AllShearableAnimals = new List<ThingDef>();
-        public static Dictionary<string, bool> DictOfAnimalSettings = new Dictionary<string, bool>();
+        public static List<ThingDef> AllShearableAnimals = new();
+        public static Dictionary<string, bool> DictOfAnimalSettings = new();
 
         public override void ExposeData()
         {
@@ -32,17 +31,17 @@ namespace AutoWool
         public static void DoSettingsWindowContents(Rect canvas)
         {
             //put a debug toggle somewhere?
-            Listing_Standard outerList = new Listing_Standard();
+            Listing_Standard outerList = new();
             outerList.Begin(canvas);
 
-            Rect window = new Rect(0f, 0f, canvas.width, canvas.height);
-            Listing_Standard list = new Listing_Standard(window, () => scrollPos)
+            Rect window = new(0f, 0f, canvas.width, canvas.height);
+            Listing_Standard list = new(window, () => scrollPos)
             {
                 ColumnWidth = (window.width / 2f) - padding
             };
 
             float scrollHeight = (AllShearableAnimals.Count + AlphaAnimalsCompat.AlphaAnimalsWithProducts.Count + 6) * (Text.CalcHeight("test", window.width) + list.verticalSpacing) / 2f;
-            Rect bigRect = new Rect(window)
+            Rect bigRect = new(window)
             {
                 width = window.width - GenUI.ScrollBarWidth,
                 height = scrollHeight > window.height ? scrollHeight : window.height
@@ -70,11 +69,11 @@ namespace AutoWool
                 {
                     if (animal.IsYak())
                     {
-                        var seasonal = AlphaAnimalsCompat.GetSeasonalList(animal);
+                        List<string> seasonal = AlphaAnimalsCompat.GetSeasonalList(animal);
                         bool first = false;
-                        foreach (var item in seasonal)
+                        foreach (string item in seasonal)
                         {
-                            var fleece = ThingDef.Named(item);
+                            ThingDef fleece = ThingDef.Named(item);
                             if (!first)
                             {
                                 MakeLabel(animal, fleece);
@@ -93,7 +92,7 @@ namespace AutoWool
                     ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
                     MakeLabel(animal, compThing);
                 }
-               
+
                 list.Gap();
                 list.Label("AutoWool.SettingsAlphaVanilla".Translate(), tooltip: "AutoWool.SettingsAlphaVanillaTooltip".Translate());
                 list.GapLine();
@@ -125,7 +124,7 @@ namespace AutoWool
                 ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(compThing) ? ReverseLookup(compThing) : compThing;
                 bool value = CheckSettings(animal);
                 list.CheckboxLabeled(resource.label.Truncate(labelWidth), ref value, labelWidth);
-                Rect rect = new Rect((float)curX.GetValue(list), list.CurHeight - textHeight, list.ColumnWidth * 0.5f, textHeight);
+                Rect rect = new((float)curX.GetValue(list), list.CurHeight - textHeight, list.ColumnWidth * 0.5f, textHeight);
                 Widgets.Label(rect, animal.label);
                 DictOfAnimalSettings[animal.defName] = value;
             }
@@ -184,7 +183,7 @@ namespace AutoWool
                     warning += "AutoWool.RemovedFleeceWarning".Translate();
                 }
 
-                Dialog_MessageBox window = new Dialog_MessageBox(warning, "Confirm".Translate());
+                Dialog_MessageBox window = new(warning, "Confirm".Translate());
                 Find.WindowStack.Add(window);
             }
         }

@@ -1,17 +1,17 @@
-﻿using System;
+﻿using HarmonyLib;
+using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
-using HarmonyLib;
 
 namespace AutoWool
 {
     public static class GeneratorUtility
     {
-        public static Dictionary<ThingDef, ThingDef> WoolDefsSeen = new Dictionary<ThingDef, ThingDef>();
+        public static Dictionary<ThingDef, ThingDef> WoolDefsSeen = new();
         public static ThingSetMaker_Sum debugThing = DefDatabase<ThingSetMakerDef>.GetNamed("OneOfEachFleece").root as ThingSetMaker_Sum;
-        private static Dictionary<string, string> NamesList = new Dictionary<string, string>
+        private static Dictionary<string, string> NamesList = new()
         {
             {"BWP_woollymammothFleece", "BWP_mammothFleece" },
             {"BWP_thunderoxFleece","BWP_NightFleece" },
@@ -60,13 +60,13 @@ namespace AutoWool
             if (!WoolDefsSeen.ContainsKey(wool))
             {
                 //Add hyperlinks
-                fleece.descriptionHyperlinks = fleece.descriptionHyperlinks ?? new List<DefHyperlink>();
-                fleece.descriptionHyperlinks.Add(new DefHyperlink { def = wool });
+                fleece.descriptionHyperlinks ??= new();
+                fleece.descriptionHyperlinks.Add(new() { def = wool });
                 //Add content source
                 fleece.modContentPack = myContentPack;
                 //Add to thing set maker
-                ThingFilter filter = new ThingFilter();
-                List<ThingDef> list = new List<ThingDef>
+                ThingFilter filter = new();
+                List<ThingDef> list = new()
                 {
                     { fleece }
                 };
@@ -88,7 +88,7 @@ namespace AutoWool
 
         private static ThingDef BasicFleeceDef()
         {
-            ThingDef def = new ThingDef
+            ThingDef def = new()
             {
                 thingClass = typeof(ThingWithComps),
                 category = ThingCategory.Item,
@@ -105,7 +105,7 @@ namespace AutoWool
                 tickerType = TickerType.Rare,
                 healthAffectsPrice = false,
                 soundInteract = SoundDefOf.Standard_Drop,
-                statBases = new List<StatModifier>()
+                statBases = new()
             };
             def.SetStatBaseValue(StatDefOf.Beauty, -4f);
             def.SetStatBaseValue(StatDefOf.MaxHitPoints, 60f);
@@ -121,17 +121,17 @@ namespace AutoWool
             };
 
             def.comps.Add(new CompProperties_Forbiddable());
-            def.thingCategories = new List<ThingCategoryDef>
-            {
+            def.thingCategories =
+            [
                 WoolDefOf.BWP_Fleece,
-            };
+            ];
 
             return def;
         }
 
         public static void DetermineButcherProducts(ThingDef animal, ThingDef woolDef, ThingDef fleeceDef, int number)
         {
-            animal.butcherProducts = animal.butcherProducts ?? new List<ThingDefCountClass>();
+            animal.butcherProducts ??= new();
 
             int half = (int)Math.Round(number / 2f);
             int mod = half % 5;
@@ -154,14 +154,13 @@ namespace AutoWool
             {
                 fleeceDef.graphicData.color = woolDef.graphicData.color;
             }
-            fleeceDef.butcherProducts = new List<ThingDefCountClass>
-            {
-                new ThingDefCountClass
-                {
+            fleeceDef.butcherProducts =
+            [
+                new() {
                     thingDef = woolDef,
                     count = 25
                 }
-            };
+            ];
             return fleeceDef;
         }
 

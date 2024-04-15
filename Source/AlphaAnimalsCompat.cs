@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using AnimalBehaviours;
+using System.Collections.Generic;
 using System.Linq;
 using Verse;
-using AnimalBehaviours;
 
 namespace AutoWool
 {
     public static class AlphaAnimalsCompat
     {
-        public static List<ThingDef> AlphaAnimalsWithProducts = new List<ThingDef>();
-        public static List<ThingDef> AlphaAnimalsWithCoreProducts = new List<ThingDef>();
+        public static List<ThingDef> AlphaAnimalsWithProducts = new();
+        public static List<ThingDef> AlphaAnimalsWithCoreProducts = new();
         public static bool IsYak(this ThingDef def) => def.defName == "AA_ChameleonYak";
 
         public static void ChameleonYaks()
@@ -30,13 +30,13 @@ namespace AutoWool
             else
             {
                 //If they're not supposed to be converted, we need to reverse the xml patch
-                compProps.seasonalItems = new List<string>
-                {
+                compProps.seasonalItems =
+                [
                     "AA_ChameleonYakWoolTemperate",
                     "AA_ChameleonYakWoolWinter",
                     "AA_ChameleonYakWoolJungle",
                     "AA_ChameleonYakWoolDesert",
-                };
+                ];
             }
             AlphaAnimalsWithProducts.Add(yak);
         }
@@ -45,7 +45,7 @@ namespace AutoWool
         {
             foreach (ThingDef animal in AlphaAnimalsWithProducts)
             {
-                ThingDef newThing = new ThingDef();
+                ThingDef newThing = new();
                 CompProperties_AnimalProduct comp = animal.GetCompProperties<CompProperties_AnimalProduct>();
 
                 if (!AutoWoolSettings.CheckSettings(animal))
