@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Verse;
+#if v1_5
+using LudeonTK;
+#endif
 
 namespace AutoWool
 {
@@ -21,7 +24,7 @@ namespace AutoWool
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref DictOfAnimalSettings, "WoolConversionSettings", LookMode.Value, LookMode.Value);
-            base.ExposeData();
+            Scribe_Values.Look(ref debugLogging, "woolDebugLogging", false, true);
         }
 
         private static float padding = 24f;
@@ -101,6 +104,12 @@ namespace AutoWool
                     ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
                     MakeLabel(animal, compThing);
                 }
+            }
+
+            if (Prefs.DevMode)
+            {
+                list.GapLine();
+                list.CheckboxLabeled("Debug logging", ref debugLogging);
             }
 
             list.End();
