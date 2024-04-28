@@ -3,6 +3,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Verse;
 
 namespace AutoWool
@@ -179,6 +180,7 @@ namespace AutoWool
                 fleeceDef.defName = $"BWP_{raceDef.label}Fleece".Replace(" ", "").Replace("-", "");
                 fleeceDef.label = $"{raceDef.label} fleece";
             }
+            fleeceDef.defName = CheckForIllegalCharacters(fleeceDef.defName);
             fleeceDef.defName = CheckForOldNames(fleeceDef.defName);
             if (silk)
             {
@@ -198,6 +200,47 @@ namespace AutoWool
                 //Should I remove it from the list you think? In case there's another animal with the same label that shouldn't get replaced?
             }
             return defName;
+        }
+
+        static Regex AllowedDefNamesRegex = (Regex)AccessTools.Field(typeof(Def), "AllowedDefNamesRegex").GetValue(null);
+        static Dictionary<char, List<char>> replaceThese = new()
+        {
+            {'a', ['à', 'á', 'â', 'ã', 'ä', 'å',] },
+            {'A', ['À', 'Á', 'Â', 'Ã', 'Ä', 'Å',] },
+            {'c', ['ç'] },
+            {'C', ['Ç'] },
+            {'e', ['è', 'é', 'ê', 'ë',] },
+            {'E', ['È', 'É', 'Ê', 'Ë',] },
+            {'i', ['ì', 'í', 'î', 'ï'] },
+            {'I', ['Ì', 'Í', 'Î', 'Ï'] },
+            {'n', ['ñ'] },
+            {'N', ['Ñ'] },
+            {'o', ['ò', 'ó', 'ô', 'õ', 'ö'] },
+            {'O', ['Ò', 'Ó', 'Ô', 'Õ', 'Ö'] },
+            {'u', ['ù', 'ú', 'û', 'ü'] },
+            {'U', ['Ù', 'Ú', 'Û', 'Ü'] },
+            {'y', ['ý', 'ÿ'] },
+            {'Y', ['Ý', 'Ÿ'] },
+        };
+        private static string CheckForIllegalCharacters(this string defName)
+        {
+            if (AllowedDefNamesRegex.IsMatch(defName))
+            {
+                return defName;
+            }
+            string result = defName;
+            foreach (KeyValuePair<char, List<char>> item in replaceThese)
+            {
+                foreach (char c in item.Value)
+                {
+                    if (result.Contains(c))
+                    {
+                        result = result.Replace(c, item.Key);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
