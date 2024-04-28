@@ -98,6 +98,8 @@ namespace AutoWool
 
         public static void MakeListOfShearables()
         {
+            AlphaAnimalsWithProducts.Clear();
+            AlphaAnimalsWithCoreProducts.Clear();
             foreach (ThingDef animal in DefDatabase<ThingDef>.AllDefs.Where(x => x.category == ThingCategory.Pawn).ToList())
             {
                 if (animal.comps.Any(x => x.compClass == typeof(CompAnimalProduct)))
