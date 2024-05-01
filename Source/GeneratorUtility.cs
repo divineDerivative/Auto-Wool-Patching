@@ -202,7 +202,11 @@ namespace AutoWool
             return defName;
         }
 
+#if v1_4
+        static Regex AllowedDefNamesRegex = (Regex)AccessTools.Field(typeof(Def), "AllowedDefnamesRegex").GetValue(null);
+#else
         static Regex AllowedDefNamesRegex = (Regex)AccessTools.Field(typeof(Def), "AllowedDefNamesRegex").GetValue(null);
+#endif
         static Dictionary<char, List<char>> replaceThese = new()
         {
             {'a', ['à', 'á', 'â', 'ã', 'ä', 'å',] },

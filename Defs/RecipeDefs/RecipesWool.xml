@@ -18,7 +18,7 @@
 		<defName>ProcessWoolAny</defName>
 		<label>process any fleece</label>
 		<description>Cleans and cards wool fleece into usable woolen fiber.</description>
-		<uiIconPath>Things/Item/Resource/fleece</uiIconPath>
+		<uiIconPath IgnoreIfNoMatchingField="True">Things/Item/Resource/fleece</uiIconPath>
 		<ingredients>
 			<li>
 				<filter>
