@@ -169,15 +169,20 @@ namespace AutoWool
         private static void SetNameAndDesc(ThingDef woolDef, ThingDef fleeceDef, ThingDef raceDef)
         {
             bool silk = false;
+            string raceLabel = raceDef.label;
+            if (!AllowedDefNamesRegex.IsMatch(raceLabel))
+            {
+                raceLabel = raceDef.defName;
+            }
             if (woolDef.defName.ToLower().Contains("silk"))
             {
-                fleeceDef.defName = $"BWP_{raceDef.label}Thread".Replace(" ", "").Replace("-", "");
+                fleeceDef.defName = $"BWP_{raceLabel}Thread".Replace(" ", "").Replace("-", "");
                 fleeceDef.label = $"{raceDef.label} thread";
                 silk = true;
             }
             else
             {
-                fleeceDef.defName = $"BWP_{raceDef.label}Fleece".Replace(" ", "").Replace("-", "");
+                fleeceDef.defName = $"BWP_{raceLabel}Fleece".Replace(" ", "").Replace("-", "");
                 fleeceDef.label = $"{raceDef.label} fleece";
             }
             fleeceDef.defName = CheckForIllegalCharacters(fleeceDef.defName);
