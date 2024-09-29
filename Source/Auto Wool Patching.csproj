@@ -67,6 +67,10 @@
     </When>
   </Choose>
   <ItemGroup>
+    <Reference Include="0DivineFramework">
+      <HintPath>..\..\DivineFramework\Assemblies\0DivineFramework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VFECore">
       <HintPath>..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
       <Private>False</Private>
@@ -86,6 +90,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\RimWorld_Debug\Mods\Auto Wool Patching" /r:1 /s /xo /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0
-robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\RimWorld_Debug_v1_4\Mods\Auto Wool Patching" /r:1 /s /xo /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0</PostBuildEvent>
+robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\RimWorld_Debug_v1_4\Mods\Auto Wool Patching" /r:1 /s /xo /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0
+robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\Users\Jocelyn\AppData\Local\RimSort\instances\Races\steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" /r:1 /s /mir /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0</PostBuildEvent>
   </PropertyGroup>
 </Project>

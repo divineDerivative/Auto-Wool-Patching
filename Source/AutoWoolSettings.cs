@@ -1,13 +1,9 @@
-﻿using HarmonyLib;
+﻿using DivineFramework;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using Verse;
-#if v1_5
-using LudeonTK;
-#endif
 
 namespace AutoWool
 {
@@ -29,11 +25,10 @@ namespace AutoWool
 
         private static float padding = 24f;
         static Vector2 scrollPos = Vector2.zero;
-        static FieldInfo curX = AccessTools.Field(typeof(Listing), "curX");
 
+        static SettingsHandler<AutoWoolSettings> settingsHandler = new();
         public static void DoSettingsWindowContents(Rect canvas)
         {
-            //put a debug toggle somewhere?
             Listing_Standard outerList = new();
             outerList.Begin(canvas);
 
@@ -52,71 +47,82 @@ namespace AutoWool
 
             Widgets.BeginScrollView(window, ref scrollPos, bigRect, true);
             list.Begin(bigRect);
-            list.Label("AutoWool.SettingsWool".Translate());
-            list.GapLine();
-            float textHeight = Text.CalcHeight("test", list.ColumnWidth);
-            float labelWidth = (list.ColumnWidth - Widgets.CheckboxSize) / 2f;
-            foreach (ThingDef animal in AllShearableAnimals)
-            {
-                ThingDef compThing = ThingFromComp(animal);
-                MakeLabel(animal, compThing);
-            }
 
-            //Special stuff for Alpha Animals
-            if (AlphaAnimalsActive)
+            if (!settingsHandler.Initialized)
             {
-                list.Gap();
-                list.Label("AutoWool.SettingsAlphaAnimals".Translate(), tooltip: "AutoWool.SettingsAlphaTooltip".Translate());
-                list.GapLine();
-                foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithProducts.Except(AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts))
+                settingsHandler.width = list.ColumnWidth;
+                settingsHandler.RegisterNewRow("Title").AddLabel("AutoWool.SettingsWool".Translate);
+                settingsHandler.RegisterNewRow().AddLine();
+                foreach (ThingDef animal in AllShearableAnimals)
                 {
-                    if (animal.IsYak())
+                    ThingDef compThing = ThingFromComp(animal);
+                    MakeRow(animal, compThing);
+                }
+
+                //Special stuff for Alpha Animals
+                if (AlphaAnimalsActive)
+                {
+                    settingsHandler.RegisterNewRow().AddSpace(height: 12f);
+                    settingsHandler.RegisterNewRow("AlphaAnimalsProducts")
+                        .AddLabel("AutoWool.SettingsAlphaUnique".Translate)
+                        .AddTooltip("AutoWool.SettingsAlphaUniqueTooltip".Translate);
+                    settingsHandler.RegisterNewRow().AddLine();
+                    foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithProducts.Except(AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts))
                     {
-                        List<string> seasonal = AlphaAnimalsCompat.GetSeasonalList(animal);
-                        bool first = false;
-                        foreach (string item in seasonal)
+                        if (animal.IsYak())
                         {
-                            ThingDef fleece = ThingDef.Named(item);
-                            if (!first)
+                            List<string> seasonal = AlphaAnimalsCompat.GetSeasonalList(animal);
+                            bool first = false;
+                            foreach (string item in seasonal)
                             {
-                                MakeLabel(animal, fleece);
-                                first = true;
+                                ThingDef fleece = ThingDef.Named(item);
+                                if (!first)
+                                {
+                                    MakeRow(animal, fleece);
+                                    first = true;
+                                }
+                                else
+                                {
+                                    //Same as MakeRow but without the animal name in the first label
+                                    UIContainer row = settingsHandler.RegisterNewRow($"{animal.label}Row{item}");
+                                    row.AddSpace();
+                                    ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(fleece) ? ReverseLookup(fleece) : fleece;
+                                    row.AddLabel(() => resource.label);
+                                    row.AddElement(NewElement.Checkbox<AutoWoolSettings>(absolute: 24f)
+                                        .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
+                                }
                             }
-                            else
-                            {
-                                ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(fleece) ? ReverseLookup(fleece) : fleece;
-                                bool value = CheckSettings(animal);
-                                list.CheckboxLabeled(resource.label.Truncate(labelWidth), ref value, labelWidth);
-                                DictOfAnimalSettings[animal.defName] = value;
-                            }
+                            continue;
                         }
-                        continue;
+                        ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
+                        MakeRow(animal, compThing);
                     }
-                    ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
-                    MakeLabel(animal, compThing);
+
+                    settingsHandler.RegisterNewRow().AddSpace(height: 12f);
+                    settingsHandler.RegisterNewRow("AlphaAnimalsCoreProducts").AddLabel("AutoWool.SettingsAlphaVanilla".Translate).AddTooltip("AutoWool.SettingsAlphaVanillaTooltip".Translate);
+                    settingsHandler.RegisterNewRow().AddLine();
+                    foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts)
+                    {
+                        ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
+                        MakeRow(animal, compThing);
+                    }
                 }
 
-                list.Gap();
-                list.Label("AutoWool.SettingsAlphaVanilla".Translate(), tooltip: "AutoWool.SettingsAlphaVanillaTooltip".Translate());
-                list.GapLine();
-                foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts)
+                if (Prefs.DevMode)
                 {
-                    ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
-                    MakeLabel(animal, compThing);
+                    settingsHandler.RegisterNewRow().AddLine();
+                    settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox<AutoWoolSettings>().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging));
                 }
-            }
 
-            if (Prefs.DevMode)
-            {
-                list.GapLine();
-                list.CheckboxLabeled("Debug logging", ref debugLogging);
+                settingsHandler.Initialize();
             }
+            settingsHandler.Draw(list);
 
             list.End();
             outerList.End();
             Widgets.EndScrollView();
 
-            ThingDef ReverseLookup(ThingDef thing)
+            static ThingDef ReverseLookup(ThingDef thing)
             {
                 foreach (KeyValuePair<ThingDef, ThingDef> entry in GeneratorUtility.WoolDefsSeen)
                 {
@@ -128,14 +134,14 @@ namespace AutoWool
                 return null;
             }
 
-            void MakeLabel(ThingDef animal, ThingDef compThing)
+            static void MakeRow(ThingDef animal, ThingDef compThing)
             {
+                UIContainer row = settingsHandler.RegisterNewRow($"{animal.label}Row");
+                row.AddLabel(() => animal.label);
                 ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(compThing) ? ReverseLookup(compThing) : compThing;
-                bool value = CheckSettings(animal);
-                list.CheckboxLabeled(resource.label.Truncate(labelWidth), ref value, labelWidth);
-                Rect rect = new((float)curX.GetValue(list), list.CurHeight - textHeight, list.ColumnWidth * 0.5f, textHeight);
-                Widgets.Label(rect, animal.label);
-                DictOfAnimalSettings[animal.defName] = value;
+                row.AddLabel(() => resource.label);
+                row.AddElement(NewElement.Checkbox<AutoWoolSettings>(absolute: 24f)
+                    .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
             }
         }
 
