@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DivineFramework;
+using HarmonyLib;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -140,7 +141,7 @@ namespace AutoWool
             mod = (mod == 0) ? 5 : mod;
             int count = half + (5 - mod);
 
-            Logging.Message($"Choose {count} {fleeceDef.defName} for {number} {woolDef.defName}", true);
+            LogUtil.Message($"Choose {count} {fleeceDef.defName} for {number} {woolDef.defName}", true);
             animal.butcherProducts.Add(new ThingDefCountClass { thingDef = fleeceDef, count = count });
         }
 

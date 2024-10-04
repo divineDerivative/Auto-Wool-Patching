@@ -80,7 +80,6 @@
     <Compile Include="AlphaAnimalsCompat.cs" />
     <Compile Include="GeneratorUtility.cs" />
     <Compile Include="HarmonyPatch.cs" />
-    <Compile Include="Logging.cs" />
     <Compile Include="AutoWoolPatching.cs" />
     <Compile Include="AutoWoolSettings.cs" />
     <Compile Include="ThingDefGenerator_Fleece.cs" />

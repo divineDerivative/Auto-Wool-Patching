@@ -1,4 +1,5 @@
 ﻿using AnimalBehaviours;
+using DivineFramework;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -54,25 +55,25 @@ namespace AutoWool
                 }
                 if (animal.IsYak())
                 {
-                    Logging.Message($"Chameleon yaks already handled via xml", true);
-                    Logging.Message("------------", true);
+                    LogUtil.Message($"Chameleon yaks already handled via xml", true);
+                    LogUtil.Message("------------", true);
                     continue;
                 }
 
                 ThingDef oldThing = comp.resourceDef;
                 if (oldThing.defName.Contains("Fleece"))
                 {
-                    Logging.Message($"{animal.label} already has fleece {oldThing.defName}", true);
+                    LogUtil.Message($"{animal.label} already has fleece {oldThing.defName}", true);
                     newThing = oldThing;
                     oldThing = newThing.butcherProducts[0].thingDef;
                     ThingDefCountClass butcherDrop = animal.butcherProducts?.Find(x => x.thingDef == oldThing);
                     if (butcherDrop == null)
                     {
-                        Logging.Message($"{animal.defName} has no butcher products", true);
+                        LogUtil.Message($"{animal.defName} has no butcher products", true);
                         GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
                     }
                     GeneratorUtility.TryAddEntry(oldThing, newThing);
-                    Logging.Message("------------", true);
+                    LogUtil.Message("------------", true);
                     continue;
                 }
 
@@ -80,9 +81,9 @@ namespace AutoWool
                 {
                     newThing = GeneratorUtility.WoolDefsSeen[oldThing];
                     comp.resourceDef = newThing;
-                    Logging.Message($"{animal.label} uses {oldThing.defName}, replacing with {newThing.defName}", true);
+                    LogUtil.Message($"{animal.label} uses {oldThing.defName}, replacing with {newThing.defName}", true);
                     GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
-                    Logging.Message("------------", true);
+                    LogUtil.Message("------------", true);
                     continue;
                 }
 
@@ -90,8 +91,8 @@ namespace AutoWool
                 GeneratorUtility.TryAddEntry(oldThing, newThing);
                 comp.resourceDef = newThing;
                 GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
-                Logging.Message($"Adding {newThing.defName} for {animal.label}", true);
-                Logging.Message("------------", true);
+                LogUtil.Message($"Adding {newThing.defName} for {animal.label}", true);
+                LogUtil.Message("------------", true);
                 yield return newThing;
             }
         }
@@ -123,7 +124,7 @@ namespace AutoWool
             CompProperties_AnimalProduct comp = animal.GetCompProperties<CompProperties_AnimalProduct>();
             if (comp == null)
             {
-                Logging.Error($"Tried to get the resource for {animal.defName} but it does not have CompAnimalProduct");
+                LogUtil.Error($"Tried to get the resource for {animal.defName} but it does not have CompAnimalProduct");
                 return null;
             }
             if (!animal.GetSeasonalList().NullOrEmpty())
@@ -138,7 +139,7 @@ namespace AutoWool
             CompProperties_AnimalProduct comp = animal.GetCompProperties<CompProperties_AnimalProduct>();
             if (comp == null)
             {
-                Logging.Error($"Tried to get the resource for {animal.defName} but it does not have CompAnimalProduct");
+                LogUtil.Error($"Tried to get the resource for {animal.defName} but it does not have CompAnimalProduct");
             }
             return comp.seasonalItems;
         }

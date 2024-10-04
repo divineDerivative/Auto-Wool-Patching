@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using DivineFramework;
+using RimWorld;
 using System.Collections.Generic;
 using Verse;
 
@@ -27,17 +28,17 @@ namespace AutoWool
                 ThingDef woolDef = comp.woolDef;
                 if (woolDef.defName.ToLower().Contains("fleece"))
                 {
-                    Logging.Message($"{animal.label} already has fleece {woolDef.defName}", true);
+                    LogUtil.Message($"{animal.label} already has fleece {woolDef.defName}", true);
                     fleeceDef = woolDef;
                     woolDef = fleeceDef.butcherProducts[0].thingDef;
                     ThingDefCountClass butcherDrop = animal.butcherProducts?.Find(x => x.thingDef == woolDef);
                     if (butcherDrop == null)
                     {
-                        Logging.Message($"{animal.defName} has no butcher products", true);
+                        LogUtil.Message($"{animal.defName} has no butcher products", true);
                         GeneratorUtility.DetermineButcherProducts(animal, woolDef, fleeceDef, comp.woolAmount);
                     }
                     GeneratorUtility.TryAddEntry(woolDef, fleeceDef);
-                    Logging.Message("------------", true);
+                    LogUtil.Message("------------", true);
                     continue;
                 }
 
@@ -45,9 +46,9 @@ namespace AutoWool
                 {
                     fleeceDef = GeneratorUtility.WoolDefsSeen[woolDef];
                     comp.woolDef = fleeceDef;
-                    Logging.Message($"{animal.label} uses {woolDef.defName}, replacing with {fleeceDef.defName}", true);
+                    LogUtil.Message($"{animal.label} uses {woolDef.defName}, replacing with {fleeceDef.defName}", true);
                     GeneratorUtility.DetermineButcherProducts(animal, woolDef, fleeceDef, comp.woolAmount);
-                    Logging.Message("------------", true);
+                    LogUtil.Message("------------", true);
                     continue;
                 }
 
@@ -55,8 +56,8 @@ namespace AutoWool
                 GeneratorUtility.TryAddEntry(woolDef, fleeceDef);
                 comp.woolDef = fleeceDef;
                 GeneratorUtility.DetermineButcherProducts(animal, woolDef, fleeceDef, comp.woolAmount);
-                Logging.Message($"Adding {fleeceDef.defName} for {animal.label}", true);
-                Logging.Message("------------", true);
+                LogUtil.Message($"Adding {fleeceDef.defName} for {animal.label}", true);
+                LogUtil.Message("------------", true);
                 yield return fleeceDef;
             }
         }

@@ -154,7 +154,7 @@ namespace AutoWool
                 {
                     return AlphaAnimalsCompat.GetAlphaResource(animal);
                 }
-                Logging.Error($"Tried to get resource for {animal.defName} but it does not have CompShearable");
+                LogUtil.Error($"Tried to get resource for {animal.defName} but it does not have CompShearable");
                 return null;
             }
             return comp.woolDef;
