@@ -1,5 +1,6 @@
 ﻿using DivineFramework;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,6 @@ namespace AutoWool
     {
         public static bool GardenActive = ModsConfig.IsActive("dismarzero.vgp.vgpgardenfabrics") || ModsConfig.IsActive("dismarzero.vgp.vgpgardenfabricssimplified");
         public static bool AlphaAnimalsActive = ModsConfig.IsActive("sarg.alphaanimals");
-        //Add a toggle for this somewhere? Maybe in the dev debug menu, I don't feel like putting it in the regular settings
         public static bool debugLogging = false;
 
         public static List<ThingDef> AllShearableAnimals = new();
@@ -27,6 +27,7 @@ namespace AutoWool
         static Vector2 scrollPos = Vector2.zero;
 
         static SettingsHandler<AutoWoolSettings> settingsHandler = new();
+        static SettingsHandler<AutoWoolSettings> alphaHandler = new(true);
         public static void DoSettingsWindowContents(Rect canvas)
         {
             Listing_Standard outerList = new();
@@ -38,7 +39,15 @@ namespace AutoWool
                 ColumnWidth = (window.width / 2f) - padding
             };
 
-            float scrollHeight = (AllShearableAnimals.Count + AlphaAnimalsCompat.AlphaAnimalsWithProducts.Count + 6) * (Text.CalcHeight("test", window.width) + list.verticalSpacing) / 2f;
+            float scrollHeight;
+            if (AlphaAnimalsActive)
+            {
+                scrollHeight = Math.Max(settingsHandler.height, alphaHandler.height);
+            }
+            else
+            {
+                scrollHeight = settingsHandler.height / 2f;
+            }
             Rect bigRect = new(window)
             {
                 width = window.width - GenUI.ScrollBarWidth,
@@ -50,6 +59,10 @@ namespace AutoWool
 
             if (!settingsHandler.Initialized)
             {
+                if (AlphaAnimalsActive)
+                {
+                    settingsHandler.maxOneColumn = true;
+                }
                 settingsHandler.width = list.ColumnWidth;
                 settingsHandler.RegisterNewRow("Title").AddLabel("AutoWool.SettingsWool".Translate);
                 settingsHandler.RegisterNewRow().AddLine();
@@ -62,11 +75,13 @@ namespace AutoWool
                 //Special stuff for Alpha Animals
                 if (AlphaAnimalsActive)
                 {
-                    settingsHandler.RegisterNewRow().AddSpace(height: 12f);
-                    settingsHandler.RegisterNewRow("AlphaAnimalsProducts")
+                    alphaHandler.width = list.ColumnWidth;
+                    alphaHandler.RegisterNewRow(newColumn: true).AddSpace(height: 12f);
+                    alphaHandler.RegisterNewRow("AlphaAnimalsProducts")
                         .AddLabel("AutoWool.SettingsAlphaUnique".Translate)
                         .AddTooltip("AutoWool.SettingsAlphaUniqueTooltip".Translate);
-                    settingsHandler.RegisterNewRow().AddLine();
+                    alphaHandler.RegisterNewRow().AddLine();;
+
                     foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithProducts.Except(AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts))
                     {
                         if (animal.IsYak())
@@ -78,13 +93,13 @@ namespace AutoWool
                                 ThingDef fleece = ThingDef.Named(item);
                                 if (!first)
                                 {
-                                    MakeRow(animal, fleece);
+                                    MakeRow(animal, fleece, true);
                                     first = true;
                                 }
                                 else
                                 {
                                     //Same as MakeRow but without the animal name in the first label
-                                    UIContainer row = settingsHandler.RegisterNewRow($"{animal.label}Row{item}");
+                                    UIContainer row = alphaHandler.RegisterNewRow($"{animal.label}Row{item}");
                                     row.AddSpace();
                                     ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(fleece) ? ReverseLookup(fleece) : fleece;
                                     row.AddLabel(() => resource.label);
@@ -95,17 +110,18 @@ namespace AutoWool
                             continue;
                         }
                         ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
-                        MakeRow(animal, compThing);
+                        MakeRow(animal, compThing, true);
                     }
 
-                    settingsHandler.RegisterNewRow().AddSpace(height: 12f);
-                    settingsHandler.RegisterNewRow("AlphaAnimalsCoreProducts").AddLabel("AutoWool.SettingsAlphaVanilla".Translate).AddTooltip("AutoWool.SettingsAlphaVanillaTooltip".Translate);
-                    settingsHandler.RegisterNewRow().AddLine();
+                    alphaHandler.RegisterNewRow().AddSpace(height: 12f);
+                    alphaHandler.RegisterNewRow("AlphaAnimalsCoreProducts").AddLabel("AutoWool.SettingsAlphaVanilla".Translate).AddTooltip("AutoWool.SettingsAlphaVanillaTooltip".Translate);
+                    alphaHandler.RegisterNewRow().AddLine();
                     foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts)
                     {
                         ThingDef compThing = AlphaAnimalsCompat.GetAlphaResource(animal);
-                        MakeRow(animal, compThing);
+                        MakeRow(animal, compThing, true);
                     }
+                    alphaHandler.Initialize();
                 }
 
                 if (Prefs.DevMode)
@@ -116,7 +132,12 @@ namespace AutoWool
 
                 settingsHandler.Initialize();
             }
+
             settingsHandler.Draw(list);
+            if (AlphaAnimalsActive)
+            {
+                alphaHandler.Draw(list);
+            }
 
             list.End();
             outerList.End();
@@ -134,9 +155,9 @@ namespace AutoWool
                 return null;
             }
 
-            static void MakeRow(ThingDef animal, ThingDef compThing)
+            static void MakeRow(ThingDef animal, ThingDef compThing, bool alpha = false)
             {
-                UIContainer row = settingsHandler.RegisterNewRow($"{animal.label}Row");
+                UIContainer row = (alpha ? alphaHandler : settingsHandler).RegisterNewRow($"{animal.label}Row");
                 row.AddLabel(() => animal.label);
                 ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(compThing) ? ReverseLookup(compThing) : compThing;
                 row.AddLabel(() => resource.label);
