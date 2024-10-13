@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -88,8 +89,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\RimWorld_Debug\Mods\Auto Wool Patching" /r:1 /s /xo /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0
-robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\RimWorld_Debug_v1_4\Mods\Auto Wool Patching" /r:1 /s /xo /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0
-robocopy "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" "C:\Users\Jocelyn\AppData\Local\RimSort\instances\Races\steam\steamapps\common\RimWorld\Mods\Auto Wool Patching" /r:1 /s /mir /xd Source .vs .git /xf *.sln .gitattributes .gitignore .editorconfig *.md || set errorlist=0</PostBuildEvent>
+    <PostBuildEvent>call "$(SolutionDir)..\DivineFramework\PostBuild.bat" "$(ProjectName)"</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="ForcePostBuild" AfterTargets="Build">
+    <Touch Files="$(IntermediateOutputPath)TouchMe.txt" />
+  </Target>
 </Project>
