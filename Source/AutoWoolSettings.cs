@@ -30,13 +30,9 @@ namespace AutoWool
         static SettingsHandler<AutoWoolSettings> alphaHandler = new(true);
         public static void DoSettingsWindowContents(Rect canvas)
         {
-            Listing_Standard outerList = new();
-            outerList.Begin(canvas);
-
-            Rect window = new(0f, 0f, canvas.width, canvas.height);
-            Listing_Standard list = new(window, () => scrollPos)
+            Listing_ScrollView outerList = new()
             {
-                ColumnWidth = (window.width / 2f) - padding
+                ColumnWidth = (canvas.width / 2f) - padding
             };
 
             float scrollHeight;
@@ -48,14 +44,7 @@ namespace AutoWool
             {
                 scrollHeight = settingsHandler.height / 2f;
             }
-            Rect bigRect = new(window)
-            {
-                width = window.width - GenUI.ScrollBarWidth,
-                height = scrollHeight > window.height ? scrollHeight : window.height
-            };
-
-            Widgets.BeginScrollView(window, ref scrollPos, bigRect, true);
-            list.Begin(bigRect);
+            Listing_Standard list = outerList.BeginScrollView(canvas, scrollHeight, ref scrollPos);
 
             if (!settingsHandler.Initialized)
             {
@@ -80,7 +69,7 @@ namespace AutoWool
                     alphaHandler.RegisterNewRow("AlphaAnimalsProducts")
                         .AddLabel("AutoWool.SettingsAlphaUnique".Translate)
                         .AddTooltip("AutoWool.SettingsAlphaUniqueTooltip".Translate);
-                    alphaHandler.RegisterNewRow().AddLine();;
+                    alphaHandler.RegisterNewRow().AddLine(); ;
 
                     foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithProducts.Except(AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts))
                     {
@@ -124,11 +113,8 @@ namespace AutoWool
                     alphaHandler.Initialize();
                 }
 
-                if (Prefs.DevMode)
-                {
-                    settingsHandler.RegisterNewRow().AddLine();
-                    settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox<AutoWoolSettings>().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging));
-                }
+                settingsHandler.RegisterNewRow().AddLine().HideWhen(() => !Prefs.DevMode);
+                settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox<AutoWoolSettings>().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging).HideWhen(() => !Prefs.DevMode).AddTooltip(() => "Restart required after activating, since all the important stuff happens during startup."));
 
                 settingsHandler.Initialize();
             }
@@ -139,9 +125,7 @@ namespace AutoWool
                 alphaHandler.Draw(list);
             }
 
-            list.End();
             outerList.End();
-            Widgets.EndScrollView();
 
             static ThingDef ReverseLookup(ThingDef thing)
             {
