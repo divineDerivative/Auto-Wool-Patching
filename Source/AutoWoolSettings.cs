@@ -68,7 +68,7 @@ namespace AutoWool
                     alphaHandler.RegisterNewRow(newColumn: true).AddSpace(height: 12f);
                     alphaHandler.RegisterNewRow("AlphaAnimalsProducts")
                         .AddLabel("AutoWool.SettingsAlphaUnique".Translate)
-                        .AddTooltip("AutoWool.SettingsAlphaUniqueTooltip".Translate);
+                        .WithTooltip("AutoWool.SettingsAlphaUniqueTooltip".Translate);
                     alphaHandler.RegisterNewRow().AddLine(); ;
 
                     foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithProducts.Except(AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts))
@@ -92,7 +92,7 @@ namespace AutoWool
                                     row.AddSpace();
                                     ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(fleece) ? ReverseLookup(fleece) : fleece;
                                     row.AddLabel(() => resource.label);
-                                    row.AddElement(NewElement.Checkbox<AutoWoolSettings>(absolute: 24f)
+                                    row.AddElement(NewElement.Checkbox(absolute: 24f)
                                         .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
                                 }
                             }
@@ -103,7 +103,7 @@ namespace AutoWool
                     }
 
                     alphaHandler.RegisterNewRow().AddSpace(height: 12f);
-                    alphaHandler.RegisterNewRow("AlphaAnimalsCoreProducts").AddLabel("AutoWool.SettingsAlphaVanilla".Translate).AddTooltip("AutoWool.SettingsAlphaVanillaTooltip".Translate);
+                    alphaHandler.RegisterNewRow("AlphaAnimalsCoreProducts").AddLabel("AutoWool.SettingsAlphaVanilla".Translate).WithTooltip("AutoWool.SettingsAlphaVanillaTooltip".Translate);
                     alphaHandler.RegisterNewRow().AddLine();
                     foreach (ThingDef animal in AlphaAnimalsCompat.AlphaAnimalsWithCoreProducts)
                     {
@@ -114,7 +114,7 @@ namespace AutoWool
                 }
 
                 settingsHandler.RegisterNewRow().AddLine().HideWhen(() => !Prefs.DevMode);
-                settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox<AutoWoolSettings>().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging).HideWhen(() => !Prefs.DevMode).AddTooltip(() => "Restart required after activating, since all the important stuff happens during startup."));
+                settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging).HideWhen(() => !Prefs.DevMode).WithTooltip(() => "Restart required after activating, since all the important stuff happens during startup."));
 
                 settingsHandler.Initialize();
             }
@@ -145,7 +145,7 @@ namespace AutoWool
                 row.AddLabel(() => animal.label);
                 ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(compThing) ? ReverseLookup(compThing) : compThing;
                 row.AddLabel(() => resource.label);
-                row.AddElement(NewElement.Checkbox<AutoWoolSettings>(absolute: 24f)
+                row.AddElement(NewElement.Checkbox(absolute: 24f)
                     .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
             }
         }
