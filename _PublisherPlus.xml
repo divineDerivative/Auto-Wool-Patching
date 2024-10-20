@@ -3,7 +3,8 @@
   <Excluded>
     <exclude>.git</exclude>
     <exclude>.rimignore</exclude>
-    <exclude>Auto Wool Patching.sln.lnk</exclude>
+    <exclude>.vs</exclude>
+    <exclude>Auto Wool Patching.sln</exclude>
     <exclude>Source</exclude>
   </Excluded>
 </Configuration>
