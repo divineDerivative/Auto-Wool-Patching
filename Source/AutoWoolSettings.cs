@@ -93,7 +93,7 @@ namespace AutoWool
                                     row.AddSpace();
                                     ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(fleece) ? ReverseLookup(fleece) : fleece;
                                     row.AddLabel(() => resource.label);
-                                    row.AddElement(NewElement.Checkbox(absolute: 24f)
+                                    row.Add(NewElement.Checkbox(absolute: 24f)
                                         .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
                                 }
                             }
@@ -115,7 +115,7 @@ namespace AutoWool
                 }
 
                 settingsHandler.RegisterNewRow().AddLine().HideWhen(() => !Prefs.DevMode);
-                settingsHandler.RegisterNewRow("DebugLogging").AddElement(NewElement.Checkbox().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging).HideWhen(() => !Prefs.DevMode).WithTooltip(() => "Restart required after activating, since all the important stuff happens during startup."));
+                settingsHandler.RegisterNewRow("DebugLogging").Add(NewElement.Checkbox().WithLabel(() => "Debug logging").WithReference(AutoWoolPatching.settings, nameof(debugLogging), debugLogging).HideWhen(() => !Prefs.DevMode).WithTooltip(() => "Restart required after activating, since all the important stuff happens during startup."));
 
                 settingsHandler.Initialize();
             }
@@ -146,7 +146,7 @@ namespace AutoWool
                 row.AddLabel(() => animal.label);
                 ThingDef resource = GeneratorUtility.WoolDefsSeen.ContainsValue(compThing) ? ReverseLookup(compThing) : compThing;
                 row.AddLabel(() => resource.label);
-                row.AddElement(NewElement.Checkbox(absolute: 24f)
+                row.Add(NewElement.Checkbox(absolute: 24f)
                     .WithReference(AutoWoolPatching.settings, nameof(DictOfAnimalSettings), DictOfAnimalSettings[animal.defName], animal.defName));
             }
         }
