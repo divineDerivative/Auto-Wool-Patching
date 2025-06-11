@@ -6,6 +6,7 @@
 	<supportedVersions>
 		<li>1.4</li>
 		<li>1.5</li>
+		<li>1.6</li>
 	</supportedVersions>
 	<packageId>divineDerivative.AutoWool</packageId>
 	<description>Another continuation of Better Wool Production, but using C# to automagically make fleece for all wools. No more waiting for someone to add a patch for new mods, it just works!

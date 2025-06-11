@@ -46,55 +46,64 @@ namespace AutoWool
         {
             foreach (ThingDef animal in AlphaAnimalsWithProducts)
             {
-                ThingDef newThing = new();
-                CompProperties_AnimalProduct comp = animal.GetCompProperties<CompProperties_AnimalProduct>();
-
-                if (!AutoWoolSettings.CheckSettings(animal))
+                var newDef = ProcessAlphaDef(animal);
+                if (newDef != null)
                 {
-                    continue;
+                    yield return newDef;
                 }
-                if (animal.IsYak())
-                {
-                    LogUtil.Message($"Chameleon yaks already handled via xml", true);
-                    LogUtil.Message("------------", true);
-                    continue;
-                }
-
-                ThingDef oldThing = comp.resourceDef;
-                if (oldThing.defName.Contains("Fleece"))
-                {
-                    LogUtil.Message($"{animal.label} already has fleece {oldThing.defName}", true);
-                    newThing = oldThing;
-                    oldThing = newThing.butcherProducts[0].thingDef;
-                    ThingDefCountClass butcherDrop = animal.butcherProducts?.Find(x => x.thingDef == oldThing);
-                    if (butcherDrop == null)
-                    {
-                        LogUtil.Message($"{animal.defName} has no butcher products", true);
-                        GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
-                    }
-                    GeneratorUtility.TryAddEntry(oldThing, newThing);
-                    LogUtil.Message("------------", true);
-                    continue;
-                }
-
-                if (GeneratorUtility.WoolDefsSeen.ContainsKey(oldThing))
-                {
-                    newThing = GeneratorUtility.WoolDefsSeen[oldThing];
-                    comp.resourceDef = newThing;
-                    LogUtil.Message($"{animal.label} uses {oldThing.defName}, replacing with {newThing.defName}", true);
-                    GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
-                    LogUtil.Message("------------", true);
-                    continue;
-                }
-
-                newThing = GeneratorUtility.MakeFleeceFor(oldThing, animal);
-                GeneratorUtility.TryAddEntry(oldThing, newThing);
-                comp.resourceDef = newThing;
-                GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
-                LogUtil.Message($"Adding {newThing.defName} for {animal.label}", true);
-                LogUtil.Message("------------", true);
-                yield return newThing;
             }
+        }
+
+        public static ThingDef ProcessAlphaDef(ThingDef animal)
+        {
+            ThingDef newThing = new();
+            CompProperties_AnimalProduct comp = animal.GetCompProperties<CompProperties_AnimalProduct>();
+
+            if (!AutoWoolSettings.CheckSettings(animal))
+            {
+                return null;
+            }
+            if (animal.IsYak())
+            {
+                LogUtil.Message($"Chameleon yaks already handled via xml", true);
+                LogUtil.Message("------------", true);
+                return null;
+            }
+
+            ThingDef oldThing = comp.resourceDef;
+            if (oldThing.defName.Contains("Fleece"))
+            {
+                LogUtil.Message($"{animal.label} already has fleece {oldThing.defName}", true);
+                newThing = oldThing;
+                oldThing = newThing.butcherProducts[0].thingDef;
+                ThingDefCountClass butcherDrop = animal.butcherProducts?.Find(x => x.thingDef == oldThing);
+                if (butcherDrop == null)
+                {
+                    LogUtil.Message($"{animal.defName} has no butcher products", true);
+                    GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
+                }
+                GeneratorUtility.TryAddEntry(oldThing, newThing);
+                LogUtil.Message("------------", true);
+                return null;
+            }
+
+            if (GeneratorUtility.WoolDefsSeen.ContainsKey(oldThing))
+            {
+                newThing = GeneratorUtility.WoolDefsSeen[oldThing];
+                comp.resourceDef = newThing;
+                LogUtil.Message($"{animal.label} uses {oldThing.defName}, replacing with {newThing.defName}", true);
+                GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
+                LogUtil.Message("------------", true);
+                return null;
+            }
+
+            newThing = GeneratorUtility.MakeFleeceFor(oldThing, animal);
+            GeneratorUtility.TryAddEntry(oldThing, newThing);
+            comp.resourceDef = newThing;
+            GeneratorUtility.DetermineButcherProducts(animal, oldThing, newThing, comp.resourceAmount);
+            LogUtil.Message($"Adding {newThing.defName} for {animal.label}", true);
+            LogUtil.Message("------------", true);
+            return newThing;
         }
 
         public static void MakeListOfShearables()
