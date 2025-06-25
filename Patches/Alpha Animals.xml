@@ -71,16 +71,33 @@
 						</ThingDef>
 					</value>
 				</li>
-				<li Class="PatchOperationReplace">
-					<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "AnimalBehaviours.CompProperties_AnimalProduct"]/seasonalItems</xpath>
-					<value>
-						<seasonalItems>
-							<li>BWP_ChameleonYakFleeceTemperate</li>
-							<li>BWP_ChameleonYakFleeceWinter</li>
-							<li>BWP_ChameleonYakFleeceJungle</li>
-							<li>BWP_ChameleonYakFleeceDesert</li>
-						</seasonalItems>
-					</value>
+				<li Class="PatchOperationConditional">
+					<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "AnimalBehaviours.CompProperties_AnimalProduct"]</xpath>
+					<match Class="PatchOperationReplace">
+						<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "AnimalBehaviours.CompProperties_AnimalProduct"]/seasonalItems</xpath>
+						<value>
+							<seasonalItems>
+								<li>BWP_ChameleonYakFleeceTemperate</li>
+								<li>BWP_ChameleonYakFleeceWinter</li>
+								<li>BWP_ChameleonYakFleeceJungle</li>
+								<li>BWP_ChameleonYakFleeceDesert</li>
+							</seasonalItems>
+						</value>
+					</match>
+					<nomatch Class="PatchOperationConditional">
+						<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "VEF.AnimalBehaviours.CompProperties_AnimalProduct"]</xpath>
+						<match Class="PatchOperationReplace">
+							<xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[@Class = "VEF.AnimalBehaviours.CompProperties_AnimalProduct"]/seasonalItems</xpath>
+							<value>
+								<seasonalItems>
+									<li>BWP_ChameleonYakFleeceTemperate</li>
+									<li>BWP_ChameleonYakFleeceWinter</li>
+									<li>BWP_ChameleonYakFleeceJungle</li>
+									<li>BWP_ChameleonYakFleeceDesert</li>
+								</seasonalItems>
+							</value>
+						</match>
+					</nomatch>
 				</li>
 				<li Class="PatchOperationConditional">
 					<xpath>/Defs/ThingDef/comps/li[@Class = "CompProperties_Shearable" and woolDef = "AA_NightWool"]/woolDef</xpath>

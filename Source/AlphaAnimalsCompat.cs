@@ -1,4 +1,8 @@
-﻿using AnimalBehaviours;
+﻿#if !v1_6
+using AnimalBehaviours;
+#else
+using VEF.AnimalBehaviours;
+#endif
 using DivineFramework;
 using System.Collections.Generic;
 using System.Linq;
