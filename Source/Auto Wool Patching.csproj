@@ -35,6 +35,16 @@
     <ErrorReport>prompt</ErrorReport>
     <DefineConstants>v1_5</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.6|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\1.6\Assemblies\</OutputPath>
+    <Optimize>false</Optimize>
+    <DebugType>portable</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <DefineConstants>v1_6</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
@@ -45,24 +55,41 @@
           <Version>2.2.2.0</Version>
           <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
-      </ItemGroup>
-      <ItemGroup>
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.*">
           <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
+        <Reference Include="VFECore">
+          <HintPath>..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)|$(Platform)' == '1.5|AnyCPU'">
       <ItemGroup>
-        <PackageReference Include="Lib.Harmony">
-          <Version>2.3.1.1</Version>
+        <PackageReference Include="Lib.Harmony" Version="2.3.3">
           <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.*">
+          <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+        <Reference Include="VFECore">
+          <HintPath>..\..\..\..\..\workshop\content\294100\2023507013\1.5\Assemblies\VFECore.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
+    </When>
+    <When Condition="'$(Configuration)|$(Platform)' == '1.6|AnyCPU'">
       <ItemGroup>
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.*-*">
+        <PackageReference Include="Lib.Harmony" Version="2.3.*">
           <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*">
+          <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+        <Reference Include="VEF">
+          <HintPath>..\..\..\..\..\workshop\content\294100\2023507013\1.6\Assemblies\VEF.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </When>
   </Choose>
@@ -70,10 +97,6 @@
     <Reference Include="0DivineFramework">
       <HintPath>..\..\DivineFramework\Assemblies\0DivineFramework.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="VFECore">
-      <HintPath>..\..\..\..\..\workshop\content\294100\2023507013\1.4\Assemblies\VFECore.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
