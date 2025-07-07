@@ -3,6 +3,10 @@ using HarmonyLib;
 using UnityEngine;
 using Verse;
 
+#if v1_4 
+#error Building for 1.4 has been disabled.
+#endif
+
 namespace AutoWool
 {
     public class AutoWoolPatching : Mod
