@@ -105,11 +105,15 @@
     <Compile Include="HarmonyPatch.cs" />
     <Compile Include="AutoWoolPatching.cs" />
     <Compile Include="AutoWoolSettings.cs" />
+    <Compile Include="Properties\FrameworkVersion.g.cs" />
     <Compile Include="ThingDefGenerator_Fleece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WoolDefOf.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call "$(SolutionDir)..\DivineFramework\PreBuild.bat" "$(ProjectDir)" "$(RootNamespace)"</PreBuildEvent>
+  </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)..\DivineFramework\PostBuild.bat" "$(ProjectName)"</PostBuildEvent>
   </PropertyGroup>

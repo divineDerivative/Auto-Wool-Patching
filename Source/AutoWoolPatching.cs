@@ -18,7 +18,7 @@ namespace AutoWool
             settings = GetSettings<AutoWoolSettings>();
             Harmony harmony = new(id: "divineDerivative.AutoWool");
             harmony.PatchAll();
-            ModManagement.RegisterMod("AutoWool.ModNameShort", typeof(AutoWoolPatching).Assembly.GetName().Name, new("0.9.0.10"), "<color=#00b7dc>[AutoWool]</color>", () => AutoWoolSettings.debugLogging);
+            ModManagement.RegisterMod("AutoWool.ModNameShort", typeof(AutoWoolPatching).Assembly.GetName().Name, new(FrameworkVersionInfo.Version), "<color=#00b7dc>[AutoWool]</color>", () => AutoWoolSettings.debugLogging);
         }
 
         public override string SettingsCategory()
