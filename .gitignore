@@ -5,6 +5,7 @@
 
 #Stuff I added
 *.lnk
+.idea/
 
 # User-specific files
 *.rsuser
