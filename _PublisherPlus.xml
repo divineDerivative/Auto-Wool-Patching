@@ -2,6 +2,7 @@
 <Configuration>
   <Excluded>
     <exclude>.git</exclude>
+    <exclude>.idea</exclude>
     <exclude>.rimignore</exclude>
     <exclude>.vs</exclude>
     <exclude>Auto Wool Patching.sln</exclude>
