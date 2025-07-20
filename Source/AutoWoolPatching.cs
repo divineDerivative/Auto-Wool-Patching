@@ -18,7 +18,7 @@ namespace AutoWool
             settings = GetSettings<AutoWoolSettings>();
             Harmony harmony = new(id: "divineDerivative.AutoWool");
             harmony.PatchAll();
-            ModManagement.RegisterMod("AutoWool.ModNameShort", typeof(AutoWoolPatching).Assembly.GetName().Name, new(FrameworkVersionInfo.Version), "<color=#00b7dc>[AutoWool]</color>", () => AutoWoolSettings.debugLogging);
+            ModManagement.RegisterMod("AutoWool.ModNameShort", new(FrameworkVersionInfo.Version));
         }
 
         public override string SettingsCategory()
@@ -36,5 +36,11 @@ namespace AutoWool
             base.WriteSettings();
             AutoWoolSettings.ApplySettings();
         }
+    }
+
+    internal class AutoWoolLogger : Logging
+    {
+        public static readonly AutoWoolLogger LogUtil = new AutoWoolLogger();
+        private AutoWoolLogger() : base("<color=#00b7dc>[AutoWool]</color>", () => AutoWoolSettings.debugLogging) { }
     }
 }

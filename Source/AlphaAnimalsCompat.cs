@@ -3,7 +3,7 @@ using AnimalBehaviours;
 #else
 using VEF.AnimalBehaviours;
 #endif
-using DivineFramework;
+using static AutoWool.AutoWoolLogger;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;

@@ -1,4 +1,4 @@
-﻿using DivineFramework;
+﻿using static AutoWool.AutoWoolLogger;
 using DivineFramework.UI;
 using RimWorld;
 using System;
