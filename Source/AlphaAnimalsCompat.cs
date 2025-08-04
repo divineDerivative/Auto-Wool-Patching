@@ -124,7 +124,7 @@ namespace AutoWool
                         continue;
                     }
                     AlphaAnimalsWithProducts.Add(animal);
-                    if (comp.resourceDef.modContentPack.IsOfficialMod)
+                    if (comp.resourceDef.modContentPack?.IsOfficialMod ?? false)
                     {
                         AlphaAnimalsWithCoreProducts.Add(animal);
                     }
